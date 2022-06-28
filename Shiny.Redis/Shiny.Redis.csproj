@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>1.0.6</Version>
+		<Authors>huguodong</Authors>
+		<Company>Shiny</Company>
+		<PackageIcon>图标.jpg</PackageIcon>
+		<Description>Redis客户端
+教程：https://www.cnblogs.com/huguodong/p/16400434.html
+		</Description>
+		<PackageProjectUrl>https://www.cnblogs.com/huguodong/p/16400434.html</PackageProjectUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\图标.jpg">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="NewLife.Redis" Version="4.1.2022.603" />
+	</ItemGroup>
+
+</Project>
