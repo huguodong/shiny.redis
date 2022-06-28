@@ -8,14 +8,15 @@
 		<Authors>huguodong</Authors>
 		<Company>Shiny</Company>
 		<PackageIcon>图标.jpg</PackageIcon>
-		<Description>Redis客户端
-教程：https://www.cnblogs.com/huguodong/p/16400434.html
+		<Description>
+			Redis客户端
+			教程：https://www.cnblogs.com/huguodong/p/16400434.html
 		</Description>
 		<PackageProjectUrl>https://www.cnblogs.com/huguodong/p/16400434.html</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\图标.jpg">
+		<None Include="图标.jpg">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>

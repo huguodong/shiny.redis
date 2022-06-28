@@ -12,7 +12,7 @@ bin-release/
 *.air
 *.ipa
 *.apk
-*.jpg
+#*.jpg
 *.png
 *.jpeg
 *.gif
