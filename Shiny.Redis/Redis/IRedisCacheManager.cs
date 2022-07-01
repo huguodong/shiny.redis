@@ -453,5 +453,27 @@ namespace Shiny.Redis
 
         #endregion
 
+
+        #region 多消费组可重复消费的队列
+
+        /// <summary>
+        /// 添加到重复消费队列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string AddSteamQueue<T>(string key, T value);
+
+        /// <summary>
+        /// 获取重复消费队列实例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public RedisStream<T> GetSteamQueue<T>(string key, string group);
+        #endregion
+
     }
 }

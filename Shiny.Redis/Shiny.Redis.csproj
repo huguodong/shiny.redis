@@ -4,13 +4,12 @@
 		<TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.6</Version>
+		<Version>1.0.7</Version>
 		<Authors>huguodong</Authors>
 		<Company>Shiny</Company>
 		<PackageIcon>图标.jpg</PackageIcon>
-		<Description>
-			Redis客户端
-			教程：https://www.cnblogs.com/huguodong/p/16400434.html
+		<Description>Redis客户端
+教程：https://www.cnblogs.com/huguodong/p/16400434.html
 		</Description>
 		<PackageProjectUrl>https://www.cnblogs.com/huguodong/p/16400434.html</PackageProjectUrl>
 	</PropertyGroup>

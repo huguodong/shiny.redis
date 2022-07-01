@@ -62,7 +62,7 @@ namespace Shiny.Redis
                 {
 
                     this.redisConnection = FullRedis.Create(redisConnenctionString);
-                    this.redisConnection.Timeout = 10000;
+                    this.redisConnection.Timeout = 15000;
                     Console.WriteLine("redis启动成功!");
 
                 }
@@ -448,7 +448,22 @@ namespace Shiny.Redis
         #endregion
 
 
+        #region 多消费组可重复消费的队列
 
+
+        public string AddSteamQueue<T>(string key, T value)
+        {
+            var queue = redisConnection.GetStream<T>(key);
+            return queue.Add(value);
+        }
+
+        public RedisStream<T> GetSteamQueue<T>(string key, string group)
+        {
+            var queue = redisConnection.GetStream<T>(key);
+            queue.Group = group;
+            return queue;
+        }
+        #endregion
 
     }
 }
