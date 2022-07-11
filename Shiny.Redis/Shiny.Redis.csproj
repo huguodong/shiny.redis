@@ -4,7 +4,7 @@
 		<TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.7</Version>
+		<Version>1.1.1</Version>
 		<Authors>huguodong</Authors>
 		<Company>Shiny</Company>
 		<PackageIcon>图标.jpg</PackageIcon>
@@ -24,7 +24,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="NewLife.Redis" Version="4.1.2022.603" />
+		<PackageReference Include="NewLife.Redis" Version="4.1.2022.704-beta0836" />
 	</ItemGroup>
 
 </Project>

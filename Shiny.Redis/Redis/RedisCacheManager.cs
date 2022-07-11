@@ -77,22 +77,49 @@ namespace Shiny.Redis
 
 
         #region 普通
+
+        public List<string> AllKeys()
+        {
+            return redisConnection.Keys.ToList();
+        }
+
         public TEntity Get<TEntity>(string key)
         {
             return redisConnection.Get<TEntity>(key);
         }
 
-        public void Set<TEntity>(string key, TEntity value, TimeSpan cacheTime)
+        public bool Set<TEntity>(string key, TEntity value, TimeSpan cacheTime)
         {
             if (value != null)
             {
-                redisConnection.Set(key, value, cacheTime);
+                return redisConnection.Set(key, value, cacheTime);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public void Set(string key, object value, TimeSpan cacheTime)
+        public bool Set<TEntity>(string key, TEntity value)
         {
-            redisConnection.Set(key, value, cacheTime);
+            if (value != null)
+            {
+                return redisConnection.Set(key, value);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool Set(string key, object value, TimeSpan cacheTime)
+        {
+            return redisConnection.Set(key, value, cacheTime);
+        }
+
+        public bool Set(string key, object value)
+        {
+            return redisConnection.Set(key, value);
         }
 
         public bool ContainsKey(string key)
@@ -108,8 +135,22 @@ namespace Shiny.Redis
 
         public List<string> Search(SearchModel model)
         {
-
             return redisConnection.Search(model).ToList();
+        }
+
+        public long DelByPattern(string pattern)
+        {
+            if (string.IsNullOrEmpty(pattern))
+                return 0;
+
+            //pattern = Regex.Replace(pattern, @"\{*.\}", "(.*)");
+            //var keys = redisConnection.Search(new SearchModel { Pattern = pattern });
+            var keys = redisConnection.Keys.Where(k => k.StartsWith(pattern));
+            //var keys = GetAllKeys().Where(k => k.StartsWith(pattern));
+            if (keys != null && keys.Any())
+                return redisConnection.Remove(keys.ToArray());
+
+            return 0;
         }
 
         public void Clear()
@@ -289,34 +330,40 @@ namespace Shiny.Redis
         #endregion
 
         #region 列表
-        public int AddList(string key, IEnumerable<string> values, TimeSpan timeSpan)
+        public int AddList<T>(string key, IEnumerable<T> values, TimeSpan timeSpan)
         {
-            var list = redisConnection.GetList<string>(key) as RedisList<string>;
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
             redisConnection.SetExpire(key, timeSpan);
             return list.AddRange(values);
         }
 
-        public int AddList(string key, IEnumerable<string> values)
+        public int AddList<T>(string key, IEnumerable<T> values)
         {
-            var list = redisConnection.GetList<string>(key) as RedisList<string>;
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
             return list.AddRange(values);
         }
 
-        public string GetList(string key, string value)
+        public T GetList<T>(string key, T value)
         {
-            var list = redisConnection.GetList<string>(key) as RedisList<string>;
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
             return list[list.IndexOf(value)];
         }
 
-        public bool ExistInList(string key, string value)
+        public List<T> GetListAll<T>(string key)
         {
-            var list = redisConnection.GetList<string>(key) as RedisList<string>;
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
+            return list.GetAll().ToList();
+        }
+
+        public bool ExistInList<T>(string key, T value)
+        {
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
             return list.Contains(value);
         }
 
-        public bool DelList(string key, string value)
+        public bool DelList<T>(string key, T value)
         {
-            var list = redisConnection.GetList<string>(key) as RedisList<string>;
+            var list = redisConnection.GetList<T>(key) as RedisList<T>;
             return list.Remove(value);
         }
 
@@ -457,10 +504,38 @@ namespace Shiny.Redis
             return queue.Add(value);
         }
 
-        public RedisStream<T> GetSteamQueue<T>(string key, string group)
+        public RedisStream<T> GetSteamQueue<T>(string key, string group = "", string consumer = "", bool fromLast = true)
         {
             var queue = redisConnection.GetStream<T>(key);
-            queue.Group = group;
+            if (!string.IsNullOrEmpty(group))
+            {
+                queue.SetGroup(group);
+            }
+            if (!string.IsNullOrEmpty(consumer))
+            {
+                queue.Consumer = consumer;
+            }
+            if (fromLast)
+            {
+                queue.FromLastOffset = true;
+            }
+            return queue;
+        }
+
+
+        public RedisStream<T> GetAutoSteamQueue<T>(string key, string group, string consumer = "")
+        {
+            var queue = redisConnection.GetStream<T>(key);
+            queue.SetGroup(group);
+            if (!string.IsNullOrEmpty(consumer))
+            {
+                queue.Consumer = consumer;
+            }
+            var gorups = queue.GetGroups().Select(it => it.Name).ToList();//获取所有消费组
+            if (!group.Contains(group))//如果消费组存在
+            {
+                queue.FromLastOffset = true;
+            }
             return queue;
         }
         #endregion

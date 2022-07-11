@@ -11,6 +11,12 @@ namespace Shiny.Redis
 
 
         #region 普通
+        /// <summary>
+        /// 获取所有Key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        List<string> AllKeys();
 
         /// <summary>
         /// 获取值，并序列化
@@ -26,7 +32,7 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="cacheTime"></param>
-        void Set(string key, object value, TimeSpan cacheTime);
+        bool Set(string key, object value, TimeSpan cacheTime);
 
         /// <summary>
         /// 插入数据到redis
@@ -34,7 +40,21 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="cacheTime"></param>
-        void Set<TEntity>(string key, TEntity value, TimeSpan cacheTime);
+        bool Set<TEntity>(string key, TEntity value, TimeSpan cacheTime);
+        /// <summary>
+        /// 插入数据到redis
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        bool Set<TEntity>(string key, TEntity value);
+
+        /// <summary>
+        /// 插入数据到redis
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        bool Set(string key, object value);
 
         /// <summary>
         /// 判断是否存在
@@ -67,6 +87,14 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <returns></returns>
         Task RemoveByKey(string key, int count);
+
+        /// <summary>
+        /// 用于在 key 模板存在时删除
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        long DelByPattern(string pattern);
+
         /// <summary>
         /// 根据关键字移除所有
         /// </summary>
@@ -257,7 +285,7 @@ namespace Shiny.Redis
         /// <param name="values"></param>
         /// <param name="timeSpan"></param>
         /// <returns></returns>
-        int AddList(string key, IEnumerable<string> values, TimeSpan timeSpan);
+        int AddList<T>(string key, IEnumerable<T> values, TimeSpan timeSpan);
 
         /// <summary>
         /// 列表
@@ -266,7 +294,7 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        int AddList(string key, IEnumerable<string> values);
+        int AddList<T>(string key, IEnumerable<T> values);
 
         /// <summary>
         /// 获取list里元素
@@ -274,7 +302,16 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        string GetList(string key, string value);
+        T GetList<T>(string key, T value);
+
+        /// <summary>
+        /// 获取列表所有
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        List<T> GetListAll<T>(string key);
+
 
         /// <summary>
         /// 删除指定元素
@@ -282,7 +319,7 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        bool DelList(string key, string value);
+        bool DelList<T>(string key, T value);
 
         /// <summary>
         /// 是否存在
@@ -290,9 +327,7 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        bool ExistInList(string key, string value);
-
-
+        bool ExistInList<T>(string key, T value);
 
         #endregion
 
@@ -463,16 +498,31 @@ namespace Shiny.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string AddSteamQueue<T>(string key, T value);
+        string AddSteamQueue<T>(string key, T value);
 
         /// <summary>
         /// 获取重复消费队列实例
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
-        /// <param name="group"></param>
+        /// <param name="group">消费组</param>
+        /// <param name="consumer">消费者</param>
+        /// <param name="fromLastOffset">首次消费时的消费策略,默认值false，表示从头部开始消费</param>
         /// <returns></returns>
-        public RedisStream<T> GetSteamQueue<T>(string key, string group);
+        RedisStream<T> GetSteamQueue<T>(string key, string group = "", string consumer = "", bool fromLastOffset = true);
+
+        /// <summary>
+        /// 获取智能重复消费队列实例:新组从当前开始消费，旧的不变
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="group"></param>
+        /// <param name="consumer"></param>
+        /// <returns></returns>
+        RedisStream<T> GetAutoSteamQueue<T>(string key, string group, string consumer = "");
+
+
+
         #endregion
 
     }
