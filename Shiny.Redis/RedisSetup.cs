@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Shiny.Redis
@@ -12,20 +13,24 @@ namespace Shiny.Redis
         /// 添加redis服务
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="redisConfiguration"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void AddRedisCacheManager(this IServiceCollection services, string redisConfiguration = null)
+        public static void AddRedisCacheManager(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            if (!string.IsNullOrEmpty(redisConfiguration))
-            {
-                services.AddSingleton<IRedisCacheManager, RedisCacheManager>(x => new RedisCacheManager(redisConfiguration));
+            services.AddSingleton<IRedisCacheManager, ShinyRedis>();
 
-            }
-            else
-            {
-                services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            }
+        }
+
+        /// <summary>
+        /// 添加redis服务
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="redisConfiguration">Redis链接字符串</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void AddRedisCacheManager(this IServiceCollection services, string redisConfiguration)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            services.AddSingleton<IRedisCacheManager, ShinyRedis>(x => new ShinyRedis(redisConfiguration));
 
         }
     }
