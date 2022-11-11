@@ -79,6 +79,7 @@ namespace Shiny.Redis
                 try
                 {
 
+
                     this.redisConnection = FullRedis.Create(redisConnenctionString);
                     Console.WriteLine("redis启动成功!");
 
