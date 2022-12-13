@@ -4,13 +4,12 @@
 		<TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1;</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>2.1.2</Version>
+		<Version>2.1.3</Version>
 		<Authors>huguodong</Authors>
 		<Company>Shiny</Company>
 		<PackageIcon>图标.jpg</PackageIcon>
-		<Description>
-			Redis客户端
-			教程：https://www.cnblogs.com/huguodong/p/16400434.html
+		<Description>Redis客户端
+教程：https://www.cnblogs.com/huguodong/p/16400434.html
 		</Description>
 		<PackageProjectUrl>https://www.cnblogs.com/huguodong/p/16400434.html</PackageProjectUrl>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -48,9 +47,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="NewLife.Redis" Version="5.0.2022.1101" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="NewLife.Redis" Version="5.0.2022.1201" />
 	</ItemGroup>
 
 </Project>
