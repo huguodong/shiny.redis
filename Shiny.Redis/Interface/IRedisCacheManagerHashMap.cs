@@ -44,7 +44,7 @@ namespace Shiny.Redis
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key">键</param>
-        /// <param name="fields">键列表</param>
+        /// <param name="fields">hash键列表</param>
         /// <returns>执行结果</returns>
         int HashDel<T>(string key, params string[] fields);
 
@@ -53,9 +53,18 @@ namespace Shiny.Redis
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key">键</param>
-        /// <param name="fields">键列表</param>
+        /// <param name="fields">hash键列表</param>
         /// <returns>数据列表</returns>
         List<T> HashGet<T>(string key, params string[] fields);
+
+        /// <summary>
+        /// 根据键获取hash列表中的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">键</param>
+        /// <param name="field">hash键</param>
+        /// <returns></returns>
+        T HashGetOne<T>(string key, string field);
 
         /// <summary>
         /// 获取所有键值对
